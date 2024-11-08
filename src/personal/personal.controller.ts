@@ -1,35 +1,72 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, InternalServerErrorException, Param, Post, Put, Query, UseFilters } from '@nestjs/common';
 import { PersonalService } from './personal.service';
 import { Personal } from './personal';
+import { Validations } from './validations/validationsController';
 
 @Controller('personal')
 export class PersonalController {
-    service = new PersonalService();
+
+    constructor(private readonly service: PersonalService){};
+    validation = new Validations();
+
+    @Get('/all')
+    allPersonals(){
+        try {
+            return this.service.getPersonals();
+        } catch (error) {
+            throw new InternalServerErrorException(`Erro na API: ${error}`);
+        }
+    };
+
     @Get()
     getPersonal(@Query('nome') nome: string){
-        return this.service.getFilterNome(nome);
+        this.validation.validateFilter(nome);
+        try {
+            return this.service.getFilterNome(nome);  
+        } catch (error) {
+            throw new InternalServerErrorException(`Erro na API: ${error}`);
+        };
     };
 
     @Get(':id')
     getPersonalID(@Param('id') id: string){
-        const idNumber = Number(id);
-        return this.service.getFilterId(idNumber);
+        this.validation.validateId(id);
+        try {
+            return this.service.getFilterId(+id);
+        } catch (error) {
+            throw new InternalServerErrorException(`Erro na API: ${error}`);
+        }
+        
     };
 
     @Post()
     postPersonal(@Body() personal: Personal){
-        return this.service.postarPersonal(personal);
+        this.validation.fieldFulfilled(personal);
+        try {
+            return this.service.postarPersonal(personal);
+        } catch (error) {
+            throw new InternalServerErrorException(`Erro na API: ${error}`);
+        };
     };
 
     @Put(':id')
     updatePersonal(@Param('id') id: string, @Body() newPersonal: Personal){
-        const idNumber = Number(id);
-        return this.service.putPersonal(idNumber, newPersonal);
+        this.validation.validateId(id);
+        try {
+            return this.service.putPersonal(+id, newPersonal);
+        } catch (error) {
+            throw new InternalServerErrorException(`Erro na API: ${error}`);
+        };
     };
 
     @Delete(':id')
     deletePersonal(@Param('id') id: string){
-        const idNumber = Number(id);
-        return this.service.delPersonal(idNumber);
+        this.validation.validateId(id);
+        try {
+            return this.service.delPersonal(+id);
+        } catch (error) {
+            throw new InternalServerErrorException(`Erro na API: ${error}`);
+        };
+
     };
 }

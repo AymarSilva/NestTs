@@ -4,16 +4,19 @@ import { Injectable } from '@nestjs/common';
 export class PersonalService {
 
  db = [
-    {id: 0, nome: "Aymar", email: "aymar.silva@aluno.senai.br"},
-    {id: 1, nome: "Souhlila", email: "souhlila.gestora@riit.com"}
+    {id: 0, nome: "Aymar", email: "aymar.estagio.riit@gmail.com"},
+    {id: 1, nome: "Souhlila", email: "souhlila.gestora@riit.com"},
+    {id: 2, nome: "Samuel", email: "samuel.estagio.riit@gmail.com"}
  ];
 
- getFilterNome(nome?: string){
-    if (nome) {
-        return this.db.filter(each => each.nome === nome);
-     }else{
-        return this.db;
-     }; 
+ getPersonals(){
+   return this.db;
+ };
+
+ getFilterNome(nome: string){
+   if (nome) {
+      return this.db.filter(each => each.nome === nome);
+   };
  };
 
  getFilterId(id: number){
