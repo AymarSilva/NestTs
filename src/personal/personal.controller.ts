@@ -12,7 +12,7 @@ export class PersonalController {
     @Get('/all')
     allPersonals(){
         try {
-            return this.service.getPersonals();
+            return this.service.getAll();
         } catch (error) {
             throw new InternalServerErrorException(`Erro na API: ${error}`);
         }
