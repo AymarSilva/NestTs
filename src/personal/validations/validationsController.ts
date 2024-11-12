@@ -3,12 +3,6 @@ import { Personal } from "../personal";
 
 export class Validations {
 
-   validateId(id : string){
-        if (isNaN(+id)) {
-            throw new BadRequestException('ID Inválido');
-        };
-    };
-
     fieldFulfilled(personal: Personal){
         const campos = [
             'nome','email'

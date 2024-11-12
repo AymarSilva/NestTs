@@ -1,4 +1,3 @@
-import { Entity, Column, PrimaryGeneratedColumn } from "typeorm";
 import { EntitySchema } from "typeorm";
 
 interface PersonalSchema{
@@ -30,16 +29,3 @@ export const PersonalSchema = new EntitySchema<PersonalSchema>({
         }
     }
 });
-
-// @Entity('personals')
-// export class PersonalTable {
-//     @Column()
-//     @PrimaryGeneratedColumn()
-//     id: number;
-
-//     @Column()
-//     nome: string;
-
-//     @Column()
-//     email: string;
-// };

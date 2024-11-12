@@ -1,8 +1,10 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module } from '@nestjs/common';
 import { PersonalController } from './personal.controller';
 import { PersonalService } from './personal.service';
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { PersonalSchema } from './personal.entity';
+import { PersonalTable } from './personalInterface.entity';
+import { ApplicationConfig } from '@nestjs/core';
 
 @Module({
   imports: [
@@ -12,13 +14,17 @@ import { PersonalSchema } from './personal.entity';
       username: 'postgres',
       password: '123*abc',
       database: 'riit',
-      entities: [],
       autoLoadEntities: true,
       synchronize: true,
     }),
-    TypeOrmModule.forFeature([PersonalSchema])
+    TypeOrmModule.forFeature([PersonalTable])
   ],
   controllers: [PersonalController],
   providers: [PersonalService]
 })
-export class PersonalModule {}
+export class PersonalModule {
+  // configure(consumer: MiddlewareConsumer) {
+  //   consumer
+  //     apply()
+  //   }
+};

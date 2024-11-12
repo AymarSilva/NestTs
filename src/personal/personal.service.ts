@@ -1,28 +1,34 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { PersonalSchema } from './personal.entity';
+// import { PersonalSchema } from './personal.entity';
+import { PersonalTable } from './personalInterface.entity';
 
 @Injectable()
 export class PersonalService {
 
    constructor(
-      @InjectRepository(PersonalSchema)
-      private personalTable: Repository<typeof PersonalSchema>
+      @InjectRepository(PersonalTable)
+      private personalTable: Repository<PersonalTable>
    ){};
 
    // Get all Personals from database
-   getAll(): Promise<typeof PersonalSchema[]>{
+   getAll(): Promise<PersonalTable[]>{
       return this.personalTable.find();
    };
 
    // Get only one Personal from database
-   getOne(id: number): Promise<typeof PersonalSchema>{
-      return this.personalTable.findOneBy({id})
+   async getOne(id: number): Promise<PersonalTable>{
+      const personal = await this.personalTable.findOneBy({id});
+      if (!personal) {
+         throw new NotFoundException("ID Inexistente");
+      };
+      return personal;
    };
 
-   async removePersonal(id: number): Promise<void> {
+   async removePersonal(id: number): Promise<Object> {
       await this.personalTable.delete(id);
+      return {message: `Personal ${id} deletado`};
    };
 
 //  db = [
@@ -35,36 +41,30 @@ export class PersonalService {
 //    return this.db;
 //  };
 
-//  getFilterNome(nome: string){
-//    if (nome) {
-//       return this.db.filter(each => each.nome === nome);
-//    };
-//  };
+ async getFilterNome(nome: string){
+   const consulta = await this.personalTable.findBy({ nome });
+   if (consulta.length < 1) {
+      throw new NotFoundException("Nome inexistente");
+   };
+   return consulta;
+ };
 
 //  getFilterId(id: number){
 //     return this.db.filter(each => each.id === id);
 //  };
 
-//  postarPersonal(body : any){
-//     this.db.push(body);
-//     return "Personal Criado"
-//  };
-
-//  delPersonal(id: number) {
-//     this.db = this.db.filter(each => each.id !== id);
-//     return "Personal deletado";
-//   };
+ postarPersonal(body : any){
+    this.personalTable.save(body);
+    return {message: "Personal Criado"};
+ };
   
-//  putPersonal(id: number, body: any){
-//     const index = this.db.findIndex(each => each.id === id);
-    
-//     this.db[index] = {
-//         id: id,
-//         nome: body.nome,
-//         email: body.email
-//     };
+ async putPersonal(id: number, body: any){
+   const personal = await this.personalTable.update(id,body);
+   if (personal.affected !== 1) {
+     throw new NotFoundException("Personal nao existe"); 
+   };
 
-//     return "Personal Atualizado";
-//  };
+   return {message: `Personal ${id} Atualizado`};
+ };
 
 };
