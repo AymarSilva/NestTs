@@ -10,10 +10,10 @@ import { ApplicationConfig } from '@nestjs/core';
   imports: [
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: 'localhost',
-      username: 'postgres',
-      password: '123*abc',
-      database: 'riit',
+      host: process.env.DB_HOST,
+      username: process.env.DB_USER,
+      password: String(process.env.DB_SENHA) || '123*abc',
+      database: process.env.DB_NAME,
       autoLoadEntities: true,
       synchronize: true,
     }),
