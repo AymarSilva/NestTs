@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 // import { PersonalSchema } from './personal.entity';
@@ -8,13 +8,14 @@ import { PersonalTable } from './personalInterface.entity';
 export class PersonalService {
 
    constructor(
-      @InjectRepository(PersonalTable)
+      @Inject('PERSO_REPO')
       private personalTable: Repository<PersonalTable>
    ){};
 
    // Get all Personals from database
-   getAll(): Promise<PersonalTable[]>{
-      return this.personalTable.find();
+   async getAll(): Promise<[number, object]>{
+      const personals = await this.personalTable.find();
+      return [200, personals];
    };
 
    // Get only one Personal from database

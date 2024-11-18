@@ -4,15 +4,23 @@ import { AppService } from './app.service';
 import { Saudacao } from './saudacao.controller';
 import { PersonalModule } from './personal/personal.module';
 import { APP_FILTER } from '@nestjs/core';
-import { HttpFilter } from './personal/exceptions.filters';
+// import { HttpFilter } from './personal/exceptions.filters';
+import { DatabaseModule } from './database/database.module';
+import { AulaModule } from './aula/aula.module';
+import { databases } from './database/database.providers';
+import { repoAulas } from './aula/aula.provider';
+import { repoPersonal } from './personal/personal.provider';
 
 @Module({
-  imports: [PersonalModule],
+  imports: [DatabaseModule, AulaModule, PersonalModule],
   controllers: [AppController, Saudacao],
-  providers: [{
-    provide: APP_FILTER,
-    useClass: HttpFilter
-  }, AppService],
+  providers: [
+    ...databases, ...repoAulas, ...repoPersonal,
+  //   {
+  //   provide: APP_FILTER,
+  //   useClass: HttpFilter
+  // }, 
+  AppService],
 })
 
 export class AppModule {}

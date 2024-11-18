@@ -4,8 +4,8 @@
 # For more help, visit the .dockerignore file reference guide at
 # https://docs.docker.com/go/build-context-dockerignore/
 
-## docker da api: docker run --name personal-api -e DB_HOST=postgres-db -e DB_USER=matheus -e DB_PASSWORD='vilaapps' -e DB_NAME=riit --network personal-network personal-file
-## docker da db: docker run --name postgres-db -e POSTGRES_USER=matheus -e POSTGRES_PASSWORD='vilaapps' -e POSTGRES_DB=riit --network personal-network -p5550:5432 postgres
+## docker da api: docker run --name personal-api -e DB_HOST=postgres-db -e DB_USER=matheus -e DB_PASSWORD=vilaapps -e DB_NAME=riit --network personal-network -p 4000:3000 personal-file
+## docker da db: docker run --name postgres-db -e POSTGRES_USER=matheus -e POSTGRES_PASSWORD=vilaapps -e POSTGRES_DB=riit --network personal-network -p5433:5433 postgres
 
 
 **/.classpath

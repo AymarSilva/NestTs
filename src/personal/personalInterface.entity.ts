@@ -1,10 +1,11 @@
 import { Entity, Column, PrimaryGeneratedColumn } from "typeorm";
+import { Personal } from "./personal";
 
 @Entity('personals')
-export class PersonalTable {
+export class PersonalTable implements Personal{
     
     @PrimaryGeneratedColumn()
-    id: number;
+    id?: number;
 
     @Column()
     nome: string;

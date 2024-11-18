@@ -7,7 +7,7 @@ interface templatePersonal{
 };
 
 export class Personal implements templatePersonal{
-    id?: number;
+    id?: number
 
     @IsNotEmpty()
     nome: string;
@@ -16,10 +16,7 @@ export class Personal implements templatePersonal{
     @IsEmail()
     email: string;
 
-    constructor(id: number, nome: string, email: string) {
-        if (id) {
-            this.id = id;
-        };
+    constructor(nome: string, email: string) {
         this.nome = nome;
         this.email = email;
     };
