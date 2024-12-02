@@ -10,9 +10,10 @@ import { AulaModule } from './aula/aula.module';
 import { databases } from './database/database.providers';
 import { repoAulas } from './aula/aula.provider';
 import { repoPersonal } from './personal/personal.provider';
+import { BackofficeModule } from './backoffice/backoffice.module';
 
 @Module({
-  imports: [DatabaseModule, AulaModule, PersonalModule],
+  imports: [DatabaseModule, AulaModule, PersonalModule, BackofficeModule],
   controllers: [AppController, Saudacao],
   providers: [
     ...databases, ...repoAulas, ...repoPersonal,
